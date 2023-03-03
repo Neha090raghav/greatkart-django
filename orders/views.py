@@ -8,12 +8,6 @@ import json
 from store.models import Product
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
-from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from .models import *
-from orders.serializers import *
 
 
 
@@ -167,23 +161,6 @@ def order_complete(request):
         return render(request,'orders/order_complete.html',context)
     except(Payment.DoesNotExist,Order.DoesNotExist):
         return redirect('home')
-
-@api_view(['GET'])
-def payments_get(request):
-    cat_obj=Payment.objects.all()
-    serializer=PaymentSerializer(cat_obj,many=True)
-    return Response({'payload':serializer.data})
-@api_view(['GET'])
-def orders_get(request):
-    cat_obj=Order.objects.all()
-    serializer=OrderSerializer(cat_obj,many=True)
-    return Response({'payload':serializer.data})
-@api_view(['GET'])
-def order_products_get(request):
-    cat_obj=OrderProduct.objects.all()
-    serializer=OrderProductSerializer(cat_obj,many=True)
-    return Response({'payload':serializer.data})
-
 
 
 
